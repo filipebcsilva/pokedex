@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Pokedex</string>
+    <string name="edit_text_pokemon">Nome do Pokemon</string>
+    <string name="search_button">Buscar</string>
+    <string name="loading">Carregando…</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_top">Meus Favoritos</string>
+    <string name="name_text">Nome</string>
+
+    <string name="back">Retornar</string>
+    <string name="favorite">Favoritar</string>
+    <string name="male_symbol">♂</string>
+    <string name="female_symbol">♀</string>
+    <string name="male">Macho</string>
+    <string name="female">Fêmea</string>
+    <string name="stat_hp">PS:</string>
+    <string name="stat_attack">Ataque:</string>
+    <string name="stat_defense">Defesa:</string>
+    <string name="stat_sp_attack">Atq. Es.:</string>
+    <string name="stat_sp_defense">Def. Es.:</string>
+    <string name="stat_speed">Velocidade:</string>
+
+    <string name="type_normal">Normal</string>
+    <string name="type_fire">Fogo</string>
+    <string name="type_water">Água</string>
+    <string name="type_grass">Planta</string>
+    <string name="type_electric">Elétrico</string>
+    <string name="type_ice">Gelo</string>
+    <string name="type_fighting">Lutador</string>
+    <string name="type_poison">Venenoso</string>
+    <string name="type_ground">Terra</string>
+    <string name="type_flying">Voador</string>
+    <string name="type_psychic">Psíquico</string>
+    <string name="type_bug">Inseto</string>
+    <string name="type_rock">Pedra</string>
+    <string name="type_ghost">Fantasma</string>
+    <string name="type_dragon">Dragão</string>
+    <string name="type_dark">Sombrio</string>
+    <string name="type_steel">Aço</string>
+    <string name="type_fairy">Fada</string>
+</resources>

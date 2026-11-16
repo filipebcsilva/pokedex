@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:theme="@style/Theme.Pokedex"
+    tools:context=".Ui.MainActivity">
+
+    <View
+        android:id="@+id/status_bar_background"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@color/red"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/search_image"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:src="@drawable/search_alt_2_svgrepo_com"
+        android:background="@color/red"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/status_bar_background"
+        app:layout_constraintEnd_toStartOf="@id/fav_image"
+        app:tint="@color/black">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/fav_image"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:src="@drawable/list_heart_minimalistic_svgrepo_com"
+        android:background="@color/red"
+        app:layout_constraintStart_toEndOf="@id/search_image"
+        app:layout_constraintTop_toBottomOf="@id/status_bar_background"
+        app:layout_constraintEnd_toStartOf="@id/grid_image"
+        app:tint="@color/black">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/grid_image"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:src="@drawable/grid_search_svgrepo_com"
+        android:background="@color/red"
+        app:layout_constraintStart_toEndOf="@id/fav_image"
+        app:layout_constraintTop_toBottomOf="@id/status_bar_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/black">
+    </ImageView>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fav_image"
+        />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

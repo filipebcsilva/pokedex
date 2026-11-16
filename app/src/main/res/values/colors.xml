@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="yellow">#FFCB05</color>
+    <color name="blue">#3D7DCA</color>
+
+    <color name="gender_male">#3D5AFE</color>
+    <color name="gender_female">#FF4FC3</color>
+
+    <color name="stat_hp_bg">#FF5959</color>
+    <color name="stat_hp_bar">#FF0000</color>
+    <color name="stat_attack_bg">#F5AC78</color>
+    <color name="stat_attack_bar">#FF7F0F</color>
+    <color name="stat_defense_bg">#FAE078</color>
+    <color name="stat_defense_bar">#F8D030</color>
+    <color name="stat_sp_attack_bg">#9DB7F5</color>
+    <color name="stat_sp_attack_bar">#6890F0</color>
+    <color name="stat_sp_defense_bg">#A7DB8D</color>
+    <color name="stat_sp_defense_bar">#78C850</color>
+    <color name="stat_speed_bg">#FA92B2</color>
+    <color name="stat_speed_bar">#F85888</color>
+
+    <color name="type_normal">#A8A878</color>
+    <color name="type_fire">#F08030</color>
+    <color name="type_water">#6890F0</color>
+    <color name="type_grass">#78C850</color>
+    <color name="type_electric">#F8D030</color>
+    <color name="type_ice">#98D8D8</color>
+    <color name="type_fighting">#C03028</color>
+    <color name="type_poison">#A040A0</color>
+    <color name="type_ground">#E0C068</color>
+    <color name="type_flying">#A890F0</color>
+    <color name="type_psychic">#F85888</color>
+    <color name="type_bug">#A8B820</color>
+    <color name="type_rock">#B8A038</color>
+    <color name="type_ghost">#705898</color>
+    <color name="type_dragon">#7038F8</color>
+    <color name="type_dark">#705848</color>
+    <color name="type_steel">#B8B8D0</color>
+    <color name="type_fairy">#EE99AC</color>
+</resources>
