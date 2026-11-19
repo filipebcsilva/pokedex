@@ -4,29 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokedex.Data.api.PokemonEntity
-import com.example.pokedex.Data.api.PokemonService
-import com.example.pokedex.Data.api.RetrofitClient
-import com.example.pokedex.Data.local.FavoriteModel
-import com.example.pokedex.Data.local.FavoritesRepository
+import com.example.pokedex.Data.remote.FavoriteModel
 import com.example.pokedex.R
 import com.example.pokedex.Ui.Adapter.FavoritesAdapter
+import com.example.pokedex.ViewModel.FavoritesViewModel
 import com.example.pokedex.databinding.FragmentFavoritesBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 
 class FavoritesFragment : Fragment() {
 
     lateinit var binding: FragmentFavoritesBinding
-    private lateinit var favorites: FavoritesRepository
+    private lateinit var viewModel: FavoritesViewModel
     private val adapter = FavoritesAdapter(
-        onClick = { openDetail(it) },
-        onRemove = { remove(it) }
+        onClick = { viewModel.abrirDetalhe(it) },
+        onRemove = { confirmarRemocao(it) }
     )
 
     override fun onCreateView(
@@ -34,48 +30,57 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFavoritesBinding.inflate(inflater, container, false)
-        favorites = FavoritesRepository(requireContext())
+        viewModel = ViewModelProvider(this).get(FavoritesViewModel::class.java)
 
         binding.recyclerListFavorites.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerListFavorites.adapter = adapter
+        binding.logoutButton.setOnClickListener { sair() }
+
+        setObservers()
 
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        loadFavorites()
-    }
+    private fun setObservers() {
+        viewModel.favoritos.observe(viewLifecycleOwner) { adapter.submit(it) }
 
-    private fun loadFavorites() {
-        adapter.submit(favorites.getAll())
-    }
+        viewModel.mensagem.observe(viewLifecycleOwner) { msg ->
+            if (msg != null) {
+                Snackbar.make(binding.root, msg, Snackbar.LENGTH_SHORT).show()
+                viewModel.mensagemExibida()
+            }
+        }
 
-    private fun remove(f: FavoriteModel) {
-        favorites.remove(f)
-        loadFavorites()
-    }
-
-    private fun openDetail(f: FavoriteModel) {
-        val service = RetrofitClient.createService(PokemonService::class.java)
-        service.getPokemon(f.name).enqueue(object : Callback<PokemonEntity> {
-            override fun onResponse(call: Call<PokemonEntity>, response: Response<PokemonEntity>) {
-                val pokemon = response.body()
-                if (!isAdded) return
-                if (response.isSuccessful && pokemon != null) {
-                    parentFragmentManager.commit {
-                        setReorderingAllowed(true)
-                        replace(R.id.fragment_container_view, PokemonDetailFragment.newInstance(pokemon))
-                        addToBackStack(null)
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "Pokémon não encontrado", Toast.LENGTH_SHORT).show()
+        viewModel.selecionado.observe(viewLifecycleOwner) { pokemon ->
+            if (pokemon != null) {
+                viewModel.limparSelecao()
+                val navController = findNavController()
+                if (navController.currentDestination?.id == R.id.favoritesFragment) {
+                    navController.navigate(
+                        R.id.action_favoritesFragment_to_pokemonDetailFragment,
+                        PokemonDetailFragment.args(pokemon)
+                    )
                 }
             }
+        }
+    }
 
-            override fun onFailure(call: Call<PokemonEntity>, t: Throwable) {
-                if (isAdded) Toast.makeText(requireContext(), "Sem conexão", Toast.LENGTH_SHORT).show()
-            }
-        })
+    private fun confirmarRemocao(f: FavoriteModel) {
+        val nome = f.name.replaceFirstChar { it.uppercase() }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.remove_dialog_title)
+            .setMessage(getString(R.string.remove_dialog_message, nome))
+            .setPositiveButton(R.string.dialog_yes) { _, _ -> viewModel.remover(f) }
+            .setNegativeButton(R.string.dialog_no, null)
+            .setNeutralButton(R.string.dialog_view_details) { _, _ -> viewModel.abrirDetalhe(f) }
+            .show()
+    }
+
+    private fun sair() {
+        viewModel.sair()
+        val navController = findNavController()
+        navController.navigate(R.id.action_global_loginFragment)
+        navController.clearBackStack(R.id.favoritesFragment)
+        navController.clearBackStack(R.id.gridFragment)
     }
 }

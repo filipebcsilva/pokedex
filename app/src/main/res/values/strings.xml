@@ -38,4 +38,44 @@
     <string name="type_dark">Sombrio</string>
     <string name="type_steel">Aço</string>
     <string name="type_fairy">Fada</string>
+
+    <string name="menu_search">Buscar</string>
+    <string name="menu_favorites">Favoritos</string>
+    <string name="menu_grid">Lista de Pokémons</string>
+
+    <string name="email_hint">E-mail</string>
+    <string name="password_hint">Senha</string>
+    <string name="login_button">Entrar</string>
+    <string name="forgot_password">Esqueci a senha</string>
+    <string name="sign_up_link">Cadastre-se</string>
+    <string name="register_title">Cadastro</string>
+    <string name="name_hint">Nome</string>
+    <string name="nick_hint">Nick</string>
+    <string name="password1_hint">Senha</string>
+    <string name="password2_hint">Confirme a senha</string>
+    <string name="register_button">Cadastrar</string>
+    <string name="logout">Sair</string>
+    <string name="reset_email_sent">Enviamos um e-mail para redefinir sua senha</string>
+
+    <string name="error_fill_fields">Preencha todos os campos</string>
+    <string name="error_invalid_email">E-mail inválido</string>
+    <string name="error_type_email_for_reset">Digite seu e-mail no campo acima para redefinir a senha</string>
+    <string name="error_weak_password">A senha precisa ter pelo menos 6 caracteres</string>
+    <string name="error_passwords_differ">As senhas não conferem</string>
+    <string name="error_email_in_use">Este e-mail já está cadastrado</string>
+    <string name="error_invalid_login">E-mail ou senha incorretos</string>
+    <string name="error_no_connection">Sem conexão</string>
+    <string name="error_pokemon_not_found">Pokémon não encontrado</string>
+    <string name="error_load_favorites">Não foi possível carregar os favoritos</string>
+    <string name="error_generic">Algo deu errado. Tente novamente</string>
+
+    <string name="favorite_added">%1$s adicionado aos favoritos</string>
+    <string name="favorite_removed">%1$s removido dos favoritos</string>
+    <string name="undo">Desfazer</string>
+
+    <string name="remove_dialog_title">Remover favorito</string>
+    <string name="remove_dialog_message">Tem certeza que deseja remover %1$s dos seus favoritos?</string>
+    <string name="dialog_yes">Sim</string>
+    <string name="dialog_no">Não</string>
+    <string name="dialog_view_details">Ver detalhes</string>
 </resources>

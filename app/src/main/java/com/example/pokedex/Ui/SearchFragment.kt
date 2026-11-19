@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.pokedex.Data.api.PokemonEntity
 import com.example.pokedex.R
 import com.example.pokedex.databinding.FragmentSearchBinding
@@ -89,11 +89,12 @@ class SearchFragment : Fragment(), View.OnClickListener {
         pendingNavigation = null
         if (!isAdded || !lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) return
         setLoading(false)
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace(R.id.fragment_container_view, PokemonDetailFragment.newInstance(pokemon))
-            addToBackStack(null)
-        }
+        val navController = findNavController()
+        if (navController.currentDestination?.id != R.id.searchFragment) return
+        navController.navigate(
+            R.id.action_searchFragment_to_pokemonDetailFragment,
+            PokemonDetailFragment.args(pokemon)
+        )
     }
 
     private fun cancelPendingNavigation() {

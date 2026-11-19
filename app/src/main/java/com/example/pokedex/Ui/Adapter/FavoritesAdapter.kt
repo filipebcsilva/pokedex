@@ -3,7 +3,7 @@ package com.example.pokedex.Ui.Adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokedex.Data.local.FavoriteModel
+import com.example.pokedex.Data.remote.FavoriteModel
 import com.example.pokedex.Ui.ViewHolder.FavoriteViewHolder
 import com.example.pokedex.databinding.FavoriteLineBinding
 

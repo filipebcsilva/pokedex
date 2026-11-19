@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.R
@@ -68,10 +68,12 @@ class GridFragment : Fragment() {
         viewModel.selecionado.observe(viewLifecycleOwner) { pokemon ->
             if (pokemon != null) {
                 viewModel.limparSelecao()
-                parentFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace(R.id.fragment_container_view, PokemonDetailFragment.newInstance(pokemon))
-                    addToBackStack(null)
+                val navController = findNavController()
+                if (navController.currentDestination?.id == R.id.gridFragment) {
+                    navController.navigate(
+                        R.id.action_gridFragment_to_pokemonDetailFragment,
+                        PokemonDetailFragment.args(pokemon)
+                    )
                 }
             }
         }

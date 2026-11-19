@@ -12,13 +12,15 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.BundleCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.pokedex.Data.api.PokemonEntity
-import com.example.pokedex.Data.local.FavoritesRepository
 import com.example.pokedex.R
+import com.example.pokedex.ViewModel.DetailViewModel
 import com.example.pokedex.databinding.FragmentPokemonDetailBinding
 import com.example.pokedex.databinding.ItemStatBinding
+import com.google.android.material.snackbar.Snackbar
 
 class PokemonDetailFragment : Fragment() {
 
@@ -26,7 +28,7 @@ class PokemonDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var pokemon: PokemonEntity
-    private lateinit var favorites: FavoritesRepository
+    private lateinit var viewModel: DetailViewModel
     private var isFemale = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +37,8 @@ class PokemonDetailFragment : Fragment() {
             requireArguments(), ARG_POKEMON, PokemonEntity::class.java
         ) ?: error("PokemonDetailFragment precisa de um Pokémon")
         isFemale = savedInstanceState?.getBoolean(STATE_FEMALE) ?: false
-        favorites = FavoritesRepository(requireContext())
+        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        viewModel.iniciar(pokemon)
     }
 
     override fun onCreateView(
@@ -49,11 +52,15 @@ class PokemonDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backButton.setOnClickListener { parentFragmentManager.popBackStack() }
+        binding.backButton.setOnClickListener { findNavController().navigateUp() }
 
-        binding.favoriteButton.setOnClickListener {
-            favorites.toggle(pokemon)
-            renderFavorite()
+        binding.favoriteButton.setOnClickListener { toggleFavorite() }
+        viewModel.favorito.observe(viewLifecycleOwner) { renderFavorite(it) }
+        viewModel.erro.observe(viewLifecycleOwner) { erro ->
+            if (erro) {
+                Snackbar.make(binding.root, R.string.error_generic, Snackbar.LENGTH_SHORT).show()
+                viewModel.erroExibido()
+            }
         }
 
         binding.maleButton.setOnClickListener { selectGender(female = false) }
@@ -61,7 +68,6 @@ class PokemonDetailFragment : Fragment() {
 
         binding.imagePokemon.contentDescription = pokemon.name.replaceFirstChar { it.uppercase() }
 
-        renderFavorite()
         renderTypes()
         renderGender()
         renderStats()
@@ -77,8 +83,18 @@ class PokemonDetailFragment : Fragment() {
         _binding = null
     }
 
-    private fun renderFavorite() {
-        val fav = favorites.isFavorite(pokemon.id)
+    private fun toggleFavorite() {
+        val agoraFavorito = viewModel.alternar()
+        val nome = pokemon.name.replaceFirstChar { it.uppercase() }
+        val texto = getString(
+            if (agoraFavorito) R.string.favorite_added else R.string.favorite_removed, nome
+        )
+        Snackbar.make(binding.root, texto, Snackbar.LENGTH_LONG)
+            .setAction(R.string.undo) { viewModel.desfazer(eraFavorito = !agoraFavorito) }
+            .show()
+    }
+
+    private fun renderFavorite(fav: Boolean) {
         binding.favoriteButton.setImageResource(
             if (fav) R.drawable.heart_svgrepo_com else R.drawable.ic_heart_outline
         )
@@ -171,7 +187,7 @@ class PokemonDetailFragment : Fragment() {
     private data class TypeStyle(@StringRes val label: Int, @ColorRes val color: Int)
 
     companion object {
-        private const val ARG_POKEMON = "arg_pokemon"
+        private const val ARG_POKEMON = "pokemon"
         private const val STATE_FEMALE = "state_female"
 
         private val TYPE_INFO = mapOf(
@@ -195,8 +211,6 @@ class PokemonDetailFragment : Fragment() {
             "fairy" to TypeStyle(R.string.type_fairy, R.color.type_fairy),
         )
 
-        fun newInstance(pokemon: PokemonEntity) = PokemonDetailFragment().apply {
-            arguments = bundleOf(ARG_POKEMON to pokemon)
-        }
+        fun args(pokemon: PokemonEntity) = Bundle().apply { putSerializable(ARG_POKEMON, pokemon) }
     }
 }
